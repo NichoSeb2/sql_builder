@@ -1,0 +1,21 @@
+{
+	"name": "sql_builder",
+	"version": "1.0.0",
+	"description": "This is the repository of my SQL builder",
+	"main": "index.js",
+	"scripts": {
+		"test": "sh run_test.sh"
+	},
+	"author": "Parnell \"NichoSeb2\" Polliotti",
+	"license": "",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NichoSeb2/sql_builder.git"
+	},
+	"bugs": {
+		"url": "https://github.com/NichoSeb2/sql_builder/issues"
+	},
+	"devDependencies": {
+		"mocha": "^8.2.0"
+	}
+}
