@@ -99,11 +99,11 @@ function buildSQL(method, tables, fields, orders = null, wheres = null, limits =
 
 						if(typeof field === "string")
 						{
-							temp_fields.push(escape + table + "." + field + escape);
+							temp_fields.push(table + "." + field);
 						}
 						else
 						{
-							temp_fields.push(field.map((f) => { return escape + table + "." + f + escape; }).join(", "));
+							temp_fields.push(field.map((f) => { return table + "." + f; }).join(", "));
 						}
 					}
 
@@ -150,13 +150,33 @@ function buildSQL(method, tables, fields, orders = null, wheres = null, limits =
 					const previous_table = tables[table_index - 1];
 					const table = tables[table_index];
 
-					wheres.push({field: previous_table + "." + options.multiple, value: table + "." + options.multiple, operator: "=", valueEscape: escape});
+					wheres.push({field: previous_table + "." + options.multiple, value: table + "." + options.multiple, operator: "=", valueEscape: ""});
 				}
 			}
 
-			if(wheres !== null) sql = sql.concat(buildSQL_wheres(wheres, escape));
+			if(wheres !== null)
+			{
+				if(options.multiple !== undefined)
+				{
+					sql = sql.concat(buildSQL_wheres(wheres, ""));
+				}
+				else
+				{
+					sql = sql.concat(buildSQL_wheres(wheres, escape));
+				}
+			}
 
-			if(orders !== null) sql = sql.concat(buildSQL_orders(orders, escape));
+			if(orders !== null)
+			{
+				if(options.multiple !== undefined)
+				{
+					sql = sql.concat(buildSQL_orders(orders, ""));
+				}
+				else
+				{
+					sql = sql.concat(buildSQL_orders(orders, escape));
+				}
+			}
 
 			if(limits !== null) sql = sql.concat(buildSQL_limits(limits, escape));
 			break;

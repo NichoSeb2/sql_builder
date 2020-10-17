@@ -51,7 +51,10 @@ describe("SQL", () =>
 
 				const tables = "table_test";
 				const fields = "*";
-				const wheres = [{field: "id", operator: "=", value: 0}, {field: "pseudo", operator: "!=", value: "test"}];
+				const wheres = [
+					{field: "id", operator: "=", value: 0}, 
+					{field: "pseudo", operator: "!=", value: "test"}
+				];
 
 				const sql = buildSQL("SELECT", tables, fields, null, wheres);
 
@@ -77,7 +80,10 @@ describe("SQL", () =>
 
 				const tables = "table_test";
 				const fields = "*";
-				const orders = [{field: "id", way: "ASC"}, {field: "pseudo", way: "DESC"}];
+				const orders = [
+					{field: "id", way: "ASC"}, 
+					{field: "pseudo", way: "DESC"}
+				];
 
 				const sql = buildSQL("SELECT", tables, fields, orders);
 
@@ -194,7 +200,10 @@ describe("SQL", () =>
 				const expected_sql = "INSERT INTO `table_test` (`pseudo`, `activity`) VALUES (\"test_pseudo\", \"test_activity\");";
 
 				const tables = "table_test";
-				const fields = [{field: "pseudo", value: "test_pseudo"}, {field: "activity", value: "test_activity"}];
+				const fields = [
+					{field: "pseudo", value: "test_pseudo"}, 
+					{field: "activity", value: "test_activity"}
+				];
 
 				const sql = buildSQL("INSERT", tables, fields);
 
@@ -206,7 +215,10 @@ describe("SQL", () =>
 				const expected_sql = "INSERT INTO `table_test` (`pseudo`, `points`) VALUES (\"test_pseudo\", 10);";
 
 				const tables = "table_test";
-				const fields = [{field: "pseudo", value: "test_pseudo"}, {field: "points", value: 10}];
+				const fields = [
+					{field: "pseudo", value: "test_pseudo"}, 
+					{field: "points", value: 10}
+				];
 
 				const sql = buildSQL("INSERT", tables, fields);
 
@@ -233,7 +245,10 @@ describe("SQL", () =>
 				const expected_sql = "UPDATE `table_test` SET `pseudo` = \"test_pseudo\", `activity` = \"test_activity\";";
 
 				const tables = "table_test";
-				const fields = [{field: "pseudo", value: "test_pseudo"}, {field: "activity", value: "test_activity"}];
+				const fields = [
+					{field: "pseudo", value: "test_pseudo"}, 
+					{field: "activity", value: "test_activity"}
+				];
 
 				const sql = buildSQL("UPDATE", tables, fields);
 
@@ -245,7 +260,10 @@ describe("SQL", () =>
 				const expected_sql = "UPDATE `table_test` SET `pseudo` = \"test_pseudo\", `points` = 10;";
 
 				const tables = "table_test";
-				const fields = [{field: "pseudo", value: "test_pseudo"}, {field: "points", value: 10}];
+				const fields = [
+					{field: "pseudo", value: "test_pseudo"}, 
+					{field: "points", value: 10}
+				];
 
 				const sql = buildSQL("UPDATE", tables, fields);
 
@@ -271,7 +289,10 @@ describe("SQL", () =>
 
 				const tables = "table_test";
 				const fields = {field: "activity", value: "test_activity"};
-				const wheres = [{field: "pseudo", operator: "=", value: "test_pseudo"}, {field: "line_up", operator: "!=", value: "test_line_up"}];
+				const wheres = [
+					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "line_up", operator: "!=", value: "test_line_up"}
+				];
 
 				const sql = buildSQL("UPDATE", tables, fields, null, wheres);
 
@@ -284,7 +305,10 @@ describe("SQL", () =>
 
 				const tables = "table_test";
 				const fields = {field: "activity", value: "test_activity"};
-				const wheres = [{field: "pseudo", operator: "=", value: "test_pseudo"}, {field: "id", operator: "=", value: 5}];
+				const wheres = [
+					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "id", operator: "=", value: 5}
+				];
 
 				const sql = buildSQL("UPDATE", tables, fields, null, wheres);
 
@@ -311,7 +335,10 @@ describe("SQL", () =>
 				const expected_sql = "DELETE FROM `table_test` WHERE `pseudo` = \"test_pseudo\" AND `activity` != \"test_activity\";";
 
 				const tables = "table_test";
-				const wheres = [{field: "pseudo", operator: "=", value: "test_pseudo"}, {field: "activity", operator: "!=", value: "test_activity"}];
+				const wheres = [
+					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "activity", operator: "!=", value: "test_activity"}
+				];
 
 				const sql = buildSQL("DELETE", tables, null, null, wheres);
 
@@ -367,7 +394,7 @@ describe("SQL", () =>
 		{
 			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id", () => 
 			{
-				const expected_sql = "SELECT `table1.*`, `table2.*` FROM `table1`, `table2` WHERE `table1.id` = `table2.id`;";
+				const expected_sql = "SELECT table1.*, table2.* FROM `table1`, `table2` WHERE table1.id = table2.id;";
 
 				const tables = ["table1", "table2"];
 				const fields = ["*", "*"];
@@ -380,10 +407,13 @@ describe("SQL", () =>
 
 			it("SELECT member.id, member.pseudo, team.name FROM member, team WHERE member.team_id = team.team_id", () => 
 			{
-				const expected_sql = "SELECT `member.id`, `member.pseudo`, `team.name` FROM `member`, `team` WHERE `member.team_id` = `team.team_id`;";
+				const expected_sql = "SELECT member.id, member.pseudo, team.name FROM `member`, `team` WHERE member.team_id = team.team_id;";
 
 				const tables = ["member", "team"];
-				const fields = [["id", "pseudo"], ["name"]];
+				const fields = [
+					["id", "pseudo"], 
+					["name"]
+				];
 				const options = {multiple: "team_id"};
 
 				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
@@ -393,13 +423,33 @@ describe("SQL", () =>
 
 			it("SELECT member.id, member.pseudo, team.name, color.code FROM member, team, color WHERE member.team_id = team.team_id AND team.team_id = color.team_id", () => 
 			{
-				const expected_sql = "SELECT `member.id`, `member.pseudo`, `team.name`, `color.code` FROM `member`, `team`, `color` WHERE `member.team_id` = `team.team_id` AND `team.team_id` = `color.team_id`;";
+				const expected_sql = "SELECT member.id, member.pseudo, team.name, color.code FROM `member`, `team`, `color` WHERE member.team_id = team.team_id AND team.team_id = color.team_id;";
 
 				const tables = ["member", "team", "color"];
-				const fields = [["id", "pseudo"], ["name"], ["code"]];
+				const fields = [
+					["id", "pseudo"], 
+					["name"], 
+					["code"]
+				];
 				const options = {multiple: "team_id"};
 
 				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id ORDER BY table1.created_at DESC", () => 
+			{
+				const expected_sql = "SELECT table1.*, table2.* FROM `table1`, `table2` WHERE table1.id = table2.id ORDER BY table1.created_at DESC;";
+
+				const tables = ["table1", "table2"];
+				const fields = ["*", "*"];
+				const orders = [
+					{field: "table1.created_at", way: "DESC"}
+				];
+				const options = {multiple: "id"};
+
+				const sql = buildSQL("SELECT", tables, fields, orders, null, null, options);
 
 				assert.strictEqual(sql, expected_sql);
 			});
