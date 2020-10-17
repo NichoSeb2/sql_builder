@@ -1,6 +1,6 @@
 {
 	"name": "@nichoseb2/sql_builder",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "This is the repository of my SQL builder",
 	"main": "index.js",
 	"scripts": {
@@ -8,7 +8,12 @@
 	},
 	"author": "Parnell \"NichoSeb2\" Polliotti",
 	"license": "",
-	"keywords": ["sql", "builder", "sql_builder", "nichoseb2"],
+	"keywords": [
+		"sql",
+		"builder",
+		"sql_builder",
+		"nichoseb2"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/NichoSeb2/sql_builder.git"
