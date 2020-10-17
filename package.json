@@ -1,5 +1,5 @@
 {
-	"name": "sql_builder",
+	"name": "@nichoseb2/sql_builder",
 	"version": "1.0.0",
 	"description": "This is the repository of my SQL builder",
 	"main": "index.js",
