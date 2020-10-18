@@ -12,7 +12,16 @@ function buildSQL_wheres(wheres, escape)
 		else if(typeof wheres === "object" && wheres.length !== undefined)
 		{
 			sql.push("WHERE");
-			sql.push(wheres.map((where) => { return [escape + where.field + escape, where.operator, (typeof where.value === "number" ? where.value : (where.valueEscape !== undefined ? where.valueEscape : "\"") + where.value + (where.valueEscape !== undefined ? where.valueEscape : "\""))].join(" "); }).join(" AND "));
+			sql.push(wheres.map((where) => {
+				if(where.separator !== undefined)
+				{
+					return [escape + where.field + escape, where.operator, (typeof where.value === "number" ? where.value : (where.valueEscape !== undefined ? where.valueEscape : "\"") + where.value + (where.valueEscape !== undefined ? where.valueEscape : "\"")), where.separator].join(" ");
+				}
+				else
+				{
+					return [escape + where.field + escape, where.operator, (typeof where.value === "number" ? where.value : (where.valueEscape !== undefined ? where.valueEscape : "\"") + where.value + (where.valueEscape !== undefined ? where.valueEscape : "\""))].join(" ");
+				}
+			}).join(" "));
 		}
 		else console.error("'wheres' must be a string or an object");
 	}
@@ -150,7 +159,14 @@ function buildSQL(method, tables, fields, orders = null, wheres = null, limits =
 					const previous_table = tables[table_index - 1];
 					const table = tables[table_index];
 
-					wheres.push({field: previous_table + "." + options.multiple, value: table + "." + options.multiple, operator: "=", valueEscape: ""});
+					if(tables.length >= 3 && (table_index + 1) != tables.length)
+					{
+						wheres.push({field: previous_table + "." + options.multiple, value: table + "." + options.multiple, operator: "=", valueEscape: "", separator: "AND"});
+					}
+					else
+					{
+						wheres.push({field: previous_table + "." + options.multiple, value: table + "." + options.multiple, operator: "=", valueEscape: ""});
+					}
 				}
 			}
 

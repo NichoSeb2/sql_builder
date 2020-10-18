@@ -52,7 +52,23 @@ describe("SQL", () =>
 				const tables = "table_test";
 				const fields = "*";
 				const wheres = [
-					{field: "id", operator: "=", value: 0}, 
+					{field: "id", operator: "=", value: 0, separator: "AND"}, 
+					{field: "pseudo", operator: "!=", value: "test"}
+				];
+
+				const sql = buildSQL("SELECT", tables, fields, null, wheres);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT * FROM table_test WHERE id = 0 OR pseudo != \"test\"", () => 
+			{
+				const expected_sql = "SELECT * FROM `table_test` WHERE `id` = 0 OR `pseudo` != \"test\";";
+
+				const tables = "table_test";
+				const fields = "*";
+				const wheres = [
+					{field: "id", operator: "=", value: 0, separator: "OR"}, 
 					{field: "pseudo", operator: "!=", value: "test"}
 				];
 
@@ -290,7 +306,7 @@ describe("SQL", () =>
 				const tables = "table_test";
 				const fields = {field: "activity", value: "test_activity"};
 				const wheres = [
-					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "pseudo", operator: "=", value: "test_pseudo", separator: "AND"}, 
 					{field: "line_up", operator: "!=", value: "test_line_up"}
 				];
 
@@ -306,7 +322,7 @@ describe("SQL", () =>
 				const tables = "table_test";
 				const fields = {field: "activity", value: "test_activity"};
 				const wheres = [
-					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "pseudo", operator: "=", value: "test_pseudo", separator: "AND"}, 
 					{field: "id", operator: "=", value: 5}
 				];
 
@@ -336,7 +352,7 @@ describe("SQL", () =>
 
 				const tables = "table_test";
 				const wheres = [
-					{field: "pseudo", operator: "=", value: "test_pseudo"}, 
+					{field: "pseudo", operator: "=", value: "test_pseudo", separator: "AND"}, 
 					{field: "activity", operator: "!=", value: "test_activity"}
 				];
 
@@ -450,6 +466,25 @@ describe("SQL", () =>
 				const options = {multiple: "id"};
 
 				const sql = buildSQL("SELECT", tables, fields, orders, null, null, options);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC", () => 
+			{
+				const expected_sql = "SELECT table1.*, table2.* FROM `table1`, `table2` WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC;";
+
+				const tables = ["table1", "table2"];
+				const fields = ["*", "*"];
+				const wheres = [
+					{field: "table1.id", value: 1, operator: "=", separator: "AND"}
+				];
+				const orders = [
+					{field: "table1.created_at", way: "DESC"}
+				];
+				const options = {multiple: "id"};
+
+				const sql = buildSQL("SELECT", tables, fields, orders, wheres, null, options);
 
 				assert.strictEqual(sql, expected_sql);
 			});
