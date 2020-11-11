@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 function buildTABLES(tables, options)
 {
 	let sql = [];
@@ -145,7 +146,7 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 			sql.push("(" + fields.map(field => {
 				let valueEscape = (field.valueEscape !== undefined ? field.valueEscape : "\"");
 
-				return (typeof field.value === "number" ? field.value : valueEscape + field.value + valueEscape);
+				return (field.value === null || field.value === "null" ? "NULL" : (typeof field.value === "number" ? field.value : valueEscape + field.value + valueEscape));
 			}).join(", ") + ")");
 			break;
 		case "UPDATE":
@@ -161,7 +162,7 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 				let prefix = (tables[field.table].as !== undefined) ? tables[field.table].as + "." : tables[field.table].value + ".";
 				let valueEscape = (field.valueEscape !== undefined ? field.valueEscape : "\"");
 
-				return prefix + field.field + " = " + (typeof field.value === "number" ? field.value : valueEscape + field.value + valueEscape);
+				return prefix + field.field + " = " + (field.value === null || field.value === "null" ? "NULL" : (typeof field.value === "number" ? field.value : valueEscape + field.value + valueEscape));
 			}).join(", "));
 
 			if(wheres !== null) sql = sql.concat(buildWHERES(tables, wheres, options));

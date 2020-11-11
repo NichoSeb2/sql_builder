@@ -308,6 +308,24 @@ describe("SQL", () =>
 
 				assert.strictEqual(sql, expected_sql);
 			});
+
+			it("INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)", () => 
+			{
+				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)";
+
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test"}, 
+					{table: 0, field: "content", value: "null"}, 
+					{table: 0, field: "image_url", value: null}
+				];
+
+				const sql = buildSQL("INSERT", tables, fields);
+
+				assert.strictEqual(sql, expected_sql);
+			});
 		});
 
 		describe("UPDATE", () => 
@@ -417,6 +435,24 @@ describe("SQL", () =>
 				];
 
 				const sql = buildSQL("UPDATE", tables, fields, wheres);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL", () => 
+			{
+				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL";
+
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test_pseudo"}, 
+					{table: 0, field: "content", value: "null"}, 
+					{table: 0, field: "image_url", value: null}
+				];
+
+				const sql = buildSQL("UPDATE", tables, fields);
 
 				assert.strictEqual(sql, expected_sql);
 			});
