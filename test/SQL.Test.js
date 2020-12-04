@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 const { buildSQL } = require("../src/SQL");
 const assert = require("assert");
@@ -326,6 +327,25 @@ describe("SQL", () =>
 
 				assert.strictEqual(sql, expected_sql);
 			});
+
+			// eslint-disable-next-line quotes
+			it('INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")', () => 
+			{
+				// eslint-disable-next-line quotes
+				const expected_sql = 'INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")';
+
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					// eslint-disable-next-line quotes
+					{table: 0, field: "pseudo", value: 'mon "super" pseudo'}
+				];
+
+				const sql = buildSQL("INSERT", tables, fields);
+
+				assert.strictEqual(sql, expected_sql);
+			});
 		});
 
 		describe("UPDATE", () => 
@@ -453,6 +473,27 @@ describe("SQL", () =>
 				];
 
 				const sql = buildSQL("UPDATE", tables, fields);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			// eslint-disable-next-line quotes
+			it('UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"', () => 
+			{
+				// eslint-disable-next-line quotes
+				const expected_sql = 'UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"';
+
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					// eslint-disable-next-line quotes
+					{table: 0, field: "pseudo", value: 'mon "super" pseudo'}
+				];
+
+				const sql = buildSQL("UPDATE", tables, fields);
+
+				console.log(sql);
 
 				assert.strictEqual(sql, expected_sql);
 			});

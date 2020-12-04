@@ -22,6 +22,9 @@
 		"url": "https://github.com/NichoSeb2/sql_builder/issues"
 	},
 	"dependencies": {
-		"mocha": "^8.2.0"
+		"sql-escape": "^1.0.1"
+	},
+	"devDependencies": {
+		"mocha": "^8.2.1"
 	}
 }
