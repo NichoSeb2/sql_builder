@@ -139,6 +139,26 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
+			it("SELECT table_test.* FROM table_test ORDER BY table_test.id asc, table_test.pseudo desc", () => 
+			{
+				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC";
+
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, value: "*"}
+				];
+				const orders = [
+					{table: 0, field: "id", way: "asc"}, 
+					{table: 0, field: "pseudo", way: "desc"}
+				];
+
+				const sql = buildSQL("SELECT", tables, fields, null, orders);
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
 			it("SELECT table_test.* FROM table_test LIMIT 5", () => 
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 5";

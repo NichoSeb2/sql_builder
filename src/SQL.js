@@ -44,7 +44,7 @@ function buildORDERS(tables, orders, options)
 
 		let prefix = (order.noTable !== undefined && order.noTable === true) ? "" : ((tables[order.table].as !== undefined) ? tables[order.table].as + "." : tables[order.table].value + ".");
 
-		return [prefix + order.field, order.way].join(" ");
+		return [prefix + order.field, order.way.toUpperCase()].join(" ");
 	}).join(", "));
 
 	return sql;
