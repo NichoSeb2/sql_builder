@@ -2,7 +2,7 @@
 
 const escape = require("sql-escape");
 
-function buildTABLES(tables, options)
+function buildTABLES({tables})
 {
 	let sql = [];
 
@@ -14,7 +14,7 @@ function buildTABLES(tables, options)
 	return sql;
 }
 
-function buildWHERES(tables, wheres, options)
+function buildWHERES({tables, wheres})
 {
 	let sql = [];
 
@@ -33,7 +33,7 @@ function buildWHERES(tables, wheres, options)
 	return sql;
 }
 
-function buildORDERS(tables, orders, options)
+function buildORDERS({tables, orders})
 {
 	let sql = [];
 
@@ -50,7 +50,7 @@ function buildORDERS(tables, orders, options)
 	return sql;
 }
 
-function buildLIMITS(tables, limits, options)
+function buildLIMITS({limits})
 {
 	let sql = [];
 
@@ -68,7 +68,7 @@ function buildLIMITS(tables, limits, options)
 	return sql;
 }
 
-function buildSQL(method, tables, fields, wheres = null, orders = null, limits = null, options = {})
+function buildSQL({method, tables, fields, wheres = null, orders = null, limits = null, options = {}})
 {
 	method = method.toUpperCase();
 
@@ -109,7 +109,7 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 
 			sql.push("FROM");
 
-			sql = sql.concat(buildTABLES(tables, options));
+			sql = sql.concat(buildTABLES({tables}));
 
 			if(options.multiple !== undefined)
 			{
@@ -124,17 +124,17 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 				}
 			}
 
-			if(wheres !== null) sql = sql.concat(buildWHERES(tables, wheres, options));
+			if(wheres !== null) sql = sql.concat(buildWHERES({tables, wheres}));
 
-			if(orders !== null) sql = sql.concat(buildORDERS(tables, orders, options));
+			if(orders !== null) sql = sql.concat(buildORDERS({tables, orders}));
 
-			if(limits !== null) sql = sql.concat(buildLIMITS(tables, limits, options));
+			if(limits !== null) sql = sql.concat(buildLIMITS({limits}));
 			break;
 		case "INSERT":
 			sql.push("INSERT");
 			sql.push("INTO");
 
-			sql = sql.concat(buildTABLES(tables, options));
+			sql = sql.concat(buildTABLES({tables}));
 
 			sql.push("(" + fields.map(field => {
 				if(field.table === undefined) field.table = 0;
@@ -155,7 +155,7 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 		case "UPDATE":
 			sql.push("UPDATE");
 
-			sql = sql.concat(buildTABLES(tables, options));
+			sql = sql.concat(buildTABLES({tables}));
 
 			sql.push("SET");
 
@@ -168,25 +168,27 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 				return prefix + field.field + " = " + (field.value === null || field.value === "null" ? "NULL" : (typeof field.value === "number" ? field.value : valueEscape + escape(field.value) + valueEscape));
 			}).join(", "));
 
-			if(wheres !== null) sql = sql.concat(buildWHERES(tables, wheres, options));
+			if(wheres !== null) sql = sql.concat(buildWHERES({tables, wheres}));
 			break;
 		case "DELETE":
 			sql.push("DELETE");
 
 			sql.push("FROM");
 
-			sql = sql.concat(buildTABLES(tables, options));
+			sql = sql.concat(buildTABLES({tables}));
 
-			if(wheres !== null) sql = sql.concat(buildWHERES(tables, wheres, options));
+			if(wheres !== null) sql = sql.concat(buildWHERES({tables, wheres}));
 			break;
 		case "TRUNCATE":
-			sql.push(buildSQL("DELETE", tables));
+			method = "DELETE";
+			sql.push(buildSQL({method, tables}));
 
 			fields = [
 				{field: "AUTO_INCREMENT", value: 1, noTable: true}
 			];
 
-			sql.push(buildSQL("ALTER", tables, fields));
+			method = "ALTER";
+			sql.push(buildSQL({method, tables, fields}));
 
 			chained = true;
 			break;
@@ -195,7 +197,7 @@ function buildSQL(method, tables, fields, wheres = null, orders = null, limits =
 
 			sql.push("TABLE");
 
-			sql = sql.concat(buildTABLES(tables, options));
+			sql = sql.concat(buildTABLES({tables}));
 
 			sql.push(fields.map(field => {
 				if(field.table === undefined) field.table = 0;

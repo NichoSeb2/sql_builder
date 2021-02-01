@@ -5,6 +5,22 @@ const assert = require("assert");
 
 describe("SQL", () => 
 {
+	describe("ERROR", () => {
+		it("method isn't supported", () => {
+			const method = "ERROR";
+			const tables = [
+				{value: "table_test"}
+			];
+			const fields = [
+				{table: 0, value: "*"}
+			];
+
+			buildSQL({method, tables, fields});
+
+			assert.ifError();
+		});
+	});
+
 	describe("FROM one db", () => 
 	{
 		describe("SELECT", () => 
@@ -13,6 +29,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -20,7 +37,24 @@ describe("SQL", () =>
 					{table: 0, value: "*"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT table_test.* FROM table_test > fields.table === undefined", () => 
+			{
+				const expected_sql = "SELECT table_test.* FROM table_test";
+
+				const method = "SELECT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{value: "*"}
+				];
+
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -29,6 +63,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.id, table_test.pseudo FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}];
 				const fields = [
@@ -36,7 +71,7 @@ describe("SQL", () =>
 					{table: 0, value: "pseudo"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -45,6 +80,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = \"0\"";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -55,7 +91,27 @@ describe("SQL", () =>
 					{table: 0, field: "id", operator: "=", value: "0"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 > wheres.table === undefined", () => 
+			{
+				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = \"0\"";
+
+				const method = "SELECT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, value: "*"}
+				];
+				const wheres = [
+					{field: "id", operator: "=", value: "0"}
+				];
+
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -64,6 +120,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = 0 AND table_test.pseudo != \"test\"";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -75,7 +132,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", operator: "!=", value: "test"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -84,6 +141,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = 0 OR table_test.pseudo != \"test\"";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -95,7 +153,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", operator: "!=", value: "test"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -104,6 +162,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -114,7 +173,7 @@ describe("SQL", () =>
 					{table: 0, field: "id", way: "ASC"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, null, orders);
+				const sql = buildSQL({method, tables, fields, orders});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -123,6 +182,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -134,7 +194,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", way: "DESC"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, null, orders);
+				const sql = buildSQL({method, tables, fields, orders});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -143,6 +203,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -154,7 +215,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", way: "desc"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, null, orders);
+				const sql = buildSQL({method, tables, fields, orders});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -163,6 +224,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 5";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -171,7 +233,7 @@ describe("SQL", () =>
 				];
 				const limits = {limit: 5};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, limits);
+				const sql = buildSQL({method, tables, fields, limits});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -180,6 +242,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 10";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -188,7 +251,7 @@ describe("SQL", () =>
 				];
 				const limits = {limit: 10};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, limits);
+				const sql = buildSQL({method, tables, fields, limits});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -197,6 +260,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 10 OFFSET 5";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -205,7 +269,7 @@ describe("SQL", () =>
 				];
 				const limits = {limit: 10, offset: 5};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, limits);
+				const sql = buildSQL({method, tables, fields, limits});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -214,6 +278,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table_test.country FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -221,7 +286,7 @@ describe("SQL", () =>
 					{table: 0, value: "country"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -230,6 +295,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT DISTINCT table_test.country FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -238,7 +304,7 @@ describe("SQL", () =>
 				];
 				const options = {distinct: true};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -247,6 +313,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT COUNT (table_test.*) FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -255,7 +322,25 @@ describe("SQL", () =>
 				];
 				const options = {count: true};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("SELECT COUNT (table_test.*) FROM table_test > fields.table === undefined", () => 
+			{
+				const expected_sql = "SELECT COUNT (table_test.*) FROM table_test";
+
+				const method = "SELECT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{value: "*"}
+				];
+				const options = {count: true};
+
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -264,6 +349,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT DISTINCT COUNT (table_test.*) FROM table_test";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -272,7 +358,7 @@ describe("SQL", () =>
 				];
 				const options = {count: true, distinct: true};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -284,6 +370,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")";
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -291,7 +378,24 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: "test"}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\") > fields.table === undefined", () => 
+			{
+				const expected_sql = "INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")";
+
+				const method = "INSERT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{field: "pseudo", value: "test"}
+				];
+
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -300,6 +404,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.activity) VALUES (\"test_pseudo\", \"test_activity\")";
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -308,7 +413,7 @@ describe("SQL", () =>
 					{table: 0, field: "activity", value: "test_activity"}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -317,6 +422,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.points) VALUES (\"test_pseudo\", 10)";
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -325,7 +431,7 @@ describe("SQL", () =>
 					{table: 0, field: "points", value: 10}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -334,6 +440,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)";
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -343,7 +450,7 @@ describe("SQL", () =>
 					{table: 0, field: "image_url", value: null}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -354,6 +461,7 @@ describe("SQL", () =>
 				// eslint-disable-next-line quotes
 				const expected_sql = 'INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")';
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -362,7 +470,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: 'mon "super" pseudo'}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -374,6 +482,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\"";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -381,7 +490,24 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: "test_pseudo"}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\" > fields.table === undefined", () => 
+			{
+				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\"";
+
+				const method = "UPDATE";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{field: "pseudo", value: "test_pseudo"}
+				];
+
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -390,6 +516,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.activity = \"test_activity\"";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -398,7 +525,7 @@ describe("SQL", () =>
 					{table: 0, field: "activity", value: "test_activity"}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -407,6 +534,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.points = 10";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -415,7 +543,7 @@ describe("SQL", () =>
 					{table: 0, field: "points", value: 10}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -424,6 +552,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\"";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -434,7 +563,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", operator: "=", value: "test_pseudo"}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -443,6 +572,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.line_up != \"test_line_up\"";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -454,7 +584,7 @@ describe("SQL", () =>
 					{table: 0, field: "line_up", operator: "!=", value: "test_line_up"}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -463,6 +593,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.id = 5";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -474,7 +605,7 @@ describe("SQL", () =>
 					{table: 0, field: "id", operator: "=", value: 5}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -483,6 +614,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -492,7 +624,7 @@ describe("SQL", () =>
 					{table: 0, field: "image_url", value: null}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -503,6 +635,7 @@ describe("SQL", () =>
 				// eslint-disable-next-line quotes
 				const expected_sql = 'UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"';
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -511,7 +644,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: 'mon "super" pseudo'}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				console.log(sql);
 
@@ -525,6 +658,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "DELETE FROM table_test WHERE table_test.pseudo = \"test\"";
 
+				const method = "DELETE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -532,7 +666,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", operator: "=", value: "test"}
 				];
 
-				const sql = buildSQL("DELETE", tables, null, wheres);
+				const sql = buildSQL({method, tables, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -541,6 +675,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "DELETE FROM table_test WHERE table_test.pseudo = \"test_pseudo\" AND table_test.activity != \"test_activity\"";
 
+				const method = "DELETE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -549,7 +684,7 @@ describe("SQL", () =>
 					{table: 0, field: "activity", operator: "!=", value: "test_activity"}
 				];
 
-				const sql = buildSQL("DELETE", tables, null, wheres);
+				const sql = buildSQL({method, tables, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -558,6 +693,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "DELETE FROM table_test WHERE table_test.id = 5";
 
+				const method = "DELETE";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -565,7 +701,7 @@ describe("SQL", () =>
 					{table: 0, field: "id", operator: "=", value: 5}
 				];
 
-				const sql = buildSQL("DELETE", tables, null, wheres);
+				const sql = buildSQL({method, tables, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -577,11 +713,12 @@ describe("SQL", () =>
 			{
 				const expected_sql = "DELETE FROM table_test; ALTER TABLE table_test AUTO_INCREMENT = 1";
 
+				const method = "TRUNCATE";
 				const tables = [
 					{value: "table_test"}
 				];
 
-				const sql = buildSQL("TRUNCATE", tables);
+				const sql = buildSQL({method, tables});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -593,6 +730,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "ALTER TABLE table_test AUTO_INCREMENT = 1";
 
+				const method = "ALTER";
 				const tables = [
 					{value: "table_test"}
 				];
@@ -600,7 +738,7 @@ describe("SQL", () =>
 					{field: "AUTO_INCREMENT", value: 1, noTable: true}
 				];
 
-				const sql = buildSQL("ALTER", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -615,6 +753,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table1"}, 
 					{value: "table2"}
@@ -625,7 +764,7 @@ describe("SQL", () =>
 				];
 				const options = {multiple: "id"};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -634,6 +773,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT member.id, member.pseudo, team.name FROM member, team WHERE member.team_id = team.team_id";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "member"}, 
 					{value: "team"}
@@ -645,7 +785,7 @@ describe("SQL", () =>
 				];
 				const options = {multiple: "team_id"};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -654,6 +794,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT member.id, member.pseudo, team.name, color.code FROM member, team, color WHERE member.team_id = team.team_id AND team.team_id = color.team_id";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "member"}, 
 					{value: "team"}, 
@@ -666,7 +807,7 @@ describe("SQL", () =>
 				];
 				const options = {multiple: "team_id"};
 
-				const sql = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -675,6 +816,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id ORDER BY table1.created_at DESC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table1"}, 
 					{value: "table2"}
@@ -688,7 +830,7 @@ describe("SQL", () =>
 				];
 				const options = {multiple: "id"};
 
-				const sql = buildSQL("SELECT", tables, fields, null, orders, null, options);
+				const sql = buildSQL({method, tables, fields, orders, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -697,6 +839,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table1"}, 
 					{value: "table2"}
@@ -713,13 +856,17 @@ describe("SQL", () =>
 				];
 				const options = {multiple: "id"};
 
-				const sql = buildSQL("SELECT", tables, fields, wheres, orders, null, options);
+				const sql = buildSQL({method, tables, fields, wheres, orders, options});
 
 				assert.strictEqual(sql, expected_sql);
 			});
 
 			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id", () => 
 			{
+				const expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id";
+
+				const method = "SELECT";
+
 				// Secondary request
 				let tables = [
 					{value: "message", as: "M1"}
@@ -732,11 +879,9 @@ describe("SQL", () =>
 					{table: 0, field: "id", value: "M0.id", operator: "=", valueEscape: ""}
 				];
 
-				const sql1 = buildSQL("SELECT", tables, fields, wheres);
+				const sql1 = buildSQL({method, tables, fields, wheres});
 
 				// Main request
-				let expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id";
-
 				tables = [
 					{value: "message", as: "M0"}, 
 					{value: "team", as: "T"}
@@ -746,21 +891,19 @@ describe("SQL", () =>
 					{table: 1, value: "*"},
 					{value: `(${sql1})`, as: "M1_created_at", noTable: true}
 				];
-				// wheres = [
-				// 	{table: 0, field: "id", value: 1, operator: "=", separator: "AND"}
-				// ];
-				// let orders = [
-				// 	{table: 0, field: "created_at", way: "DESC"}
-				// ];
 				let options = {multiple: "id"};
 
-				const sql0 = buildSQL("SELECT", tables, fields, null, null, null, options);
+				const sql0 = buildSQL({method, tables, fields, options});
 
 				assert.strictEqual(sql0, expected_sql);
 			});
 
 			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC", () => 
 			{
+				const expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC";
+
+				const method = "SELECT";
+
 				// M1
 				let tables = [
 					{value: "message", as: "M1"}
@@ -773,11 +916,9 @@ describe("SQL", () =>
 					{table: 0, field: "id", value: "M0.id", operator: "=", valueEscape: ""}
 				];
 
-				const sql1 = buildSQL("SELECT", tables, fields, wheres);
+				const sql1 = buildSQL({method, tables, fields, wheres});
 
 				// M0
-				let expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC";
-
 				tables = [
 					{value: "message", as: "M0"}, 
 					{value: "team", as: "T"}
@@ -795,13 +936,17 @@ describe("SQL", () =>
 				];
 				let options = {multiple: "id"};
 
-				const sql0 = buildSQL("SELECT", tables, fields, wheres, orders, null, options);
+				const sql0 = buildSQL({method, tables, fields, wheres, orders, options});
 
 				assert.strictEqual(sql0, expected_sql);
 			});
 
 			it("SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC", () => 
 			{
+				const expected_sql = "SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC";
+
+				const method = "SELECT";
+
 				// M1_created_at
 				let tables = [
 					{value: "message", as: "M1"}
@@ -817,9 +962,9 @@ describe("SQL", () =>
 				let orders = [
 					{field: "created_at", way: "DESC", noTable: true}
 				];
-				let LIMITS = {limit: 1, offset: 0};
+				let limits = {limit: 1, offset: 0};
 
-				const sql1 = buildSQL("SELECT", tables, fields, wheres, orders, LIMITS);
+				const sql1 = buildSQL({method, tables, fields, wheres, orders, limits});
 
 				// M1_content
 				tables = [
@@ -829,11 +974,9 @@ describe("SQL", () =>
 					{table: 0, value: "content"}
 				];
 
-				const sql2 = buildSQL("SELECT", tables, fields, wheres, orders, LIMITS);
+				const sql2 = buildSQL({method, tables, fields, wheres, orders, limits});
 
 				// M0
-				let expected_sql = "SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC";
-
 				tables = [
 					{value: "message", as: "M0"}, 
 					{value: "team", as: "T"}
@@ -855,7 +998,7 @@ describe("SQL", () =>
 				];
 				let options = {multiple: "recruiter_id"};
 
-				const sql0 = buildSQL("SELECT", tables, fields, null, orders, null, options);
+				const sql0 = buildSQL({method, tables, fields, orders, options});
 
 				assert.strictEqual(sql0, expected_sql);
 			});
@@ -870,6 +1013,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT T.* FROM table_test AS T";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -877,7 +1021,7 @@ describe("SQL", () =>
 					{table: 0, value: "*"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -886,6 +1030,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT T.* FROM table_test AS T WHERE T.id = 0";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -896,7 +1041,7 @@ describe("SQL", () =>
 					{table: 0, field: "id", operator: "=", value: 0}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, wheres);
+				const sql = buildSQL({method, tables, fields, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -905,6 +1050,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT T.* FROM table_test AS T ORDER BY T.id ASC, T.pseudo DESC";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -916,7 +1062,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", way: "DESC"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields, null, orders);
+				const sql = buildSQL({method, tables, fields, orders});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -925,6 +1071,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "SELECT T.id AS UUID FROM table_test AS T";
 
+				const method = "SELECT";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -932,7 +1079,7 @@ describe("SQL", () =>
 					{table: 0, value: "id", as: "UUID"}
 				];
 
-				const sql = buildSQL("SELECT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -944,6 +1091,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "INSERT INTO table_test AS T (T.pseudo) VALUES (\"test\")";
 
+				const method = "INSERT";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -951,7 +1099,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: "test"}
 				];
 
-				const sql = buildSQL("INSERT", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -963,6 +1111,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "UPDATE table_test AS T SET T.pseudo = \"test_pseudo\"";
 
+				const method = "UPDATE";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -970,7 +1119,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", value: "test_pseudo"}
 				];
 
-				const sql = buildSQL("UPDATE", tables, fields);
+				const sql = buildSQL({method, tables, fields});
 
 				assert.strictEqual(sql, expected_sql);
 			});
@@ -982,6 +1131,7 @@ describe("SQL", () =>
 			{
 				const expected_sql = "DELETE FROM table_test AS T WHERE T.pseudo = \"test\"";
 
+				const method = "DELETE";
 				const tables = [
 					{value: "table_test", as: "T"}
 				];
@@ -989,7 +1139,7 @@ describe("SQL", () =>
 					{table: 0, field: "pseudo", operator: "=", value: "test"}
 				];
 
-				const sql = buildSQL("DELETE", tables, null, wheres);
+				const sql = buildSQL({method, tables, wheres});
 
 				assert.strictEqual(sql, expected_sql);
 			});
