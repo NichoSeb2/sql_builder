@@ -1,13 +1,12 @@
 {
-	"name": "@nichoseb2/sql_builder",
+	"name": "sql_builder",
 	"version": "2.3.0",
 	"description": "This is the repository of my SQL builder",
 	"main": "index.js",
 	"scripts": {
-		"test": "sh run_test.sh"
+		"test": "mocha"
 	},
 	"author": "Parnell \"NichoSeb2\" Polliotti",
-	"license": "",
 	"keywords": [
 		"sql",
 		"builder",
