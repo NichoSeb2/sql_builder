@@ -3,8 +3,7 @@
 const { buildSQL } = require("../src/SQL");
 const assert = require("assert");
 
-describe("SQL", () => 
-{
+describe("SQL", () => {
 	describe("ERROR", () => {
 		it("method isn't supported", () => {
 			const method = "ERROR";
@@ -21,12 +20,9 @@ describe("SQL", () =>
 		});
 	});
 
-	describe("FROM one db", () => 
-	{
-		describe("SELECT", () => 
-		{
-			it("SELECT table_test.* FROM table_test", () => 
-			{
+	describe("FROM one db", () => {
+		describe("SELECT", () => {
+			it("SELECT table_test.* FROM table_test", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test";
 
 				const method = "SELECT";
@@ -42,8 +38,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test > fields.table === undefined", () => 
-			{
+			it("SELECT table_test.* FROM table_test > fields.table === undefined", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test";
 
 				const method = "SELECT";
@@ -59,8 +54,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.id, table_test.pseudo FROM table_test", () => 
-			{
+			it("SELECT table_test.id, table_test.pseudo FROM table_test", () => {
 				const expected_sql = "SELECT table_test.id, table_test.pseudo FROM table_test";
 
 				const method = "SELECT";
@@ -76,8 +70,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0", () => 
-			{
+			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = \"0\"";
 
 				const method = "SELECT";
@@ -96,8 +89,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 > wheres.table === undefined", () => 
-			{
+			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 > wheres.table === undefined", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = \"0\"";
 
 				const method = "SELECT";
@@ -116,8 +108,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 AND table_test.pseudo != \"test\"", () => 
-			{
+			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 AND table_test.pseudo != \"test\"", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = 0 AND table_test.pseudo != \"test\"";
 
 				const method = "SELECT";
@@ -137,8 +128,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 OR table_test.pseudo != \"test\"", () => 
-			{
+			it("SELECT table_test.* FROM table_test WHERE table_test.id = 0 OR table_test.pseudo != \"test\"", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test WHERE table_test.id = 0 OR table_test.pseudo != \"test\"";
 
 				const method = "SELECT";
@@ -158,8 +148,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test ORDER BY table_test.id ASC", () => 
-			{
+			it("SELECT table_test.* FROM table_test ORDER BY table_test.id ASC", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC";
 
 				const method = "SELECT";
@@ -178,8 +167,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC", () => 
-			{
+			it("SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC";
 
 				const method = "SELECT";
@@ -199,8 +187,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test ORDER BY table_test.id asc, table_test.pseudo desc", () => 
-			{
+			it("SELECT table_test.* FROM table_test ORDER BY table_test.id asc, table_test.pseudo desc", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test ORDER BY table_test.id ASC, table_test.pseudo DESC";
 
 				const method = "SELECT";
@@ -220,8 +207,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test LIMIT 5", () => 
-			{
+			it("SELECT table_test.* FROM table_test LIMIT 5", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 5";
 
 				const method = "SELECT";
@@ -238,8 +224,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test LIMIT 10", () => 
-			{
+			it("SELECT table_test.* FROM table_test LIMIT 10", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 10";
 
 				const method = "SELECT";
@@ -256,8 +241,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.* FROM table_test LIMIT 10 OFFSET 5", () => 
-			{
+			it("SELECT table_test.* FROM table_test LIMIT 10 OFFSET 5", () => {
 				const expected_sql = "SELECT table_test.* FROM table_test LIMIT 10 OFFSET 5";
 
 				const method = "SELECT";
@@ -274,8 +258,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table_test.country FROM table_test", () => 
-			{
+			it("SELECT table_test.country FROM table_test", () => {
 				const expected_sql = "SELECT table_test.country FROM table_test";
 
 				const method = "SELECT";
@@ -291,8 +274,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT DISTINCT table_test.country FROM table_test", () => 
-			{
+			it("SELECT DISTINCT table_test.country FROM table_test", () => {
 				const expected_sql = "SELECT DISTINCT table_test.country FROM table_test";
 
 				const method = "SELECT";
@@ -309,8 +291,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT COUNT (table_test.*) FROM table_test", () => 
-			{
+			it("SELECT COUNT (table_test.*) FROM table_test", () => {
 				const expected_sql = "SELECT COUNT (table_test.*) FROM table_test";
 
 				const method = "SELECT";
@@ -327,8 +308,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT COUNT (table_test.*) FROM table_test > fields.table === undefined", () => 
-			{
+			it("SELECT COUNT (table_test.*) FROM table_test > fields.table === undefined", () => {
 				const expected_sql = "SELECT COUNT (table_test.*) FROM table_test";
 
 				const method = "SELECT";
@@ -345,8 +325,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT DISTINCT COUNT (table_test.*) FROM table_test", () => 
-			{
+			it("SELECT DISTINCT COUNT (table_test.*) FROM table_test", () => {
 				const expected_sql = "SELECT DISTINCT COUNT (table_test.*) FROM table_test";
 
 				const method = "SELECT";
@@ -364,10 +343,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("INSERT", () => 
-		{
-			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")", () => 
-			{
+		describe("INSERT", () => {
+			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")";
 
 				const method = "INSERT";
@@ -383,8 +360,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\") > fields.table === undefined", () => 
-			{
+			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\") > fields.table === undefined", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")";
 
 				const method = "INSERT";
@@ -400,8 +376,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("INSERT INTO table_test (table_test.pseudo, table_test.activity) VALUES (\"test_pseudo\", \"test_activity\")", () => 
-			{
+			it("INSERT INTO table_test (table_test.pseudo, table_test.activity) VALUES (\"test_pseudo\", \"test_activity\")", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.activity) VALUES (\"test_pseudo\", \"test_activity\")";
 
 				const method = "INSERT";
@@ -418,8 +393,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("INSERT INTO table_test (table_test.pseudo, table_test.points) VALUES (\"test_pseudo\", 10)", () => 
-			{
+			it("INSERT INTO table_test (table_test.pseudo, table_test.points) VALUES (\"test_pseudo\", 10)", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.points) VALUES (\"test_pseudo\", 10)";
 
 				const method = "INSERT";
@@ -436,8 +410,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)", () => 
-			{
+			it("INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.content, table_test.image_url) VALUES (\"test\", NULL, NULL)";
 
 				const method = "INSERT";
@@ -456,8 +429,7 @@ describe("SQL", () =>
 			});
 
 			// eslint-disable-next-line quotes
-			it('INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")', () => 
-			{
+			it('INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")', () => {
 				// eslint-disable-next-line quotes
 				const expected_sql = 'INSERT INTO table_test (table_test.pseudo) VALUES ("mon \\"super\\" pseudo")';
 
@@ -476,10 +448,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("UPDATE", () => 
-		{
-			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\"", () => 
-			{
+		describe("UPDATE", () => {
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\"", () => {
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\"";
 
 				const method = "UPDATE";
@@ -495,8 +465,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\" > fields.table === undefined", () => 
-			{
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\" > fields.table === undefined", () => {
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\"";
 
 				const method = "UPDATE";
@@ -512,8 +481,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.activity = \"test_activity\"", () => 
-			{
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.activity = \"test_activity\"", () => {
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.activity = \"test_activity\"";
 
 				const method = "UPDATE";
@@ -530,8 +498,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.points = 10", () => 
-			{
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.points = 10", () => {
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.points = 10";
 
 				const method = "UPDATE";
@@ -548,8 +515,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\"", () => 
-			{
+			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\"", () => {
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\"";
 
 				const method = "UPDATE";
@@ -568,8 +534,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.line_up != \"test_line_up\"", () => 
-			{
+			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.line_up != \"test_line_up\"", () => {
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.line_up != \"test_line_up\"";
 
 				const method = "UPDATE";
@@ -589,8 +554,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.id = 5", () => 
-			{
+			it("UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.id = 5", () => {
 				const expected_sql = "UPDATE table_test SET table_test.activity = \"test_activity\" WHERE table_test.pseudo = \"test_pseudo\" AND table_test.id = 5";
 
 				const method = "UPDATE";
@@ -610,8 +574,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL", () => 
-			{
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL", () => {
 				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.content = NULL, table_test.image_url = NULL";
 
 				const method = "UPDATE";
@@ -630,8 +593,7 @@ describe("SQL", () =>
 			});
 
 			// eslint-disable-next-line quotes
-			it('UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"', () => 
-			{
+			it('UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"', () => {
 				// eslint-disable-next-line quotes
 				const expected_sql = 'UPDATE table_test SET table_test.pseudo = "mon \\"super\\" pseudo"';
 
@@ -652,10 +614,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("DELETE", () => 
-		{
-			it("DELETE FROM table_test WHERE table_test.pseudo = test", () => 
-			{
+		describe("DELETE", () => {
+			it("DELETE FROM table_test WHERE table_test.pseudo = test", () => {
 				const expected_sql = "DELETE FROM table_test WHERE table_test.pseudo = \"test\"";
 
 				const method = "DELETE";
@@ -671,8 +631,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("DELETE FROM table_test WHERE table_test.pseudo = test_pseudo AND table_test.activity = test_activity", () => 
-			{
+			it("DELETE FROM table_test WHERE table_test.pseudo = test_pseudo AND table_test.activity = test_activity", () => {
 				const expected_sql = "DELETE FROM table_test WHERE table_test.pseudo = \"test_pseudo\" AND table_test.activity != \"test_activity\"";
 
 				const method = "DELETE";
@@ -689,8 +648,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("DELETE FROM table_test WHERE table_test.id = 5", () => 
-			{
+			it("DELETE FROM table_test WHERE table_test.id = 5", () => {
 				const expected_sql = "DELETE FROM table_test WHERE table_test.id = 5";
 
 				const method = "DELETE";
@@ -707,10 +665,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("TRUNCATE", () => 
-		{
-			it("DELETE FROM table_test, ALTER TABLE table_test AUTO_INCREMENT = 1", () => 
-			{
+		describe("TRUNCATE", () => {
+			it("DELETE FROM table_test, ALTER TABLE table_test AUTO_INCREMENT = 1", () => {
 				const expected_sql = "DELETE FROM table_test; ALTER TABLE table_test AUTO_INCREMENT = 1";
 
 				const method = "TRUNCATE";
@@ -724,10 +680,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("ALTER", () => 
-		{
-			it("ALTER TABLE table_test AUTO_INCREMENT = 1", () => 
-			{
+		describe("ALTER", () => {
+			it("ALTER TABLE table_test AUTO_INCREMENT = 1", () => {
 				const expected_sql = "ALTER TABLE table_test AUTO_INCREMENT = 1";
 
 				const method = "ALTER";
@@ -745,12 +699,9 @@ describe("SQL", () =>
 		});
 	});
 
-	describe("FROM multiple db", () => 
-	{
-		describe("SELECT", () => 
-		{
-			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id", () => 
-			{
+	describe("FROM multiple db", () => {
+		describe("SELECT", () => {
+			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id", () => {
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id";
 
 				const method = "SELECT";
@@ -769,8 +720,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT member.id, member.pseudo, team.name FROM member, team WHERE member.team_id = team.team_id", () => 
-			{
+			it("SELECT member.id, member.pseudo, team.name FROM member, team WHERE member.team_id = team.team_id", () => {
 				const expected_sql = "SELECT member.id, member.pseudo, team.name FROM member, team WHERE member.team_id = team.team_id";
 
 				const method = "SELECT";
@@ -790,8 +740,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT member.id, member.pseudo, team.name, color.code FROM member, team, color WHERE member.team_id = team.team_id AND team.team_id = color.team_id", () => 
-			{
+			it("SELECT member.id, member.pseudo, team.name, color.code FROM member, team, color WHERE member.team_id = team.team_id AND team.team_id = color.team_id", () => {
 				const expected_sql = "SELECT member.id, member.pseudo, team.name, color.code FROM member, team, color WHERE member.team_id = team.team_id AND team.team_id = color.team_id";
 
 				const method = "SELECT";
@@ -812,8 +761,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id ORDER BY table1.created_at DESC", () => 
-			{
+			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id ORDER BY table1.created_at DESC", () => {
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = table2.id ORDER BY table1.created_at DESC";
 
 				const method = "SELECT";
@@ -835,8 +783,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC", () => 
-			{
+			it("SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC", () => {
 				const expected_sql = "SELECT table1.*, table2.* FROM table1, table2 WHERE table1.id = 1 AND table1.id = table2.id ORDER BY table1.created_at DESC";
 
 				const method = "SELECT";
@@ -861,8 +808,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id", () => 
-			{
+			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id", () => {
 				const expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = T.id";
 
 				const method = "SELECT";
@@ -898,8 +844,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql0, expected_sql);
 			});
 
-			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC", () => 
-			{
+			it("SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC", () => {
 				const expected_sql = "SELECT M0.*, T.*, (SELECT M1.created_at FROM message AS M1 WHERE M1.id = M0.id) AS M1_created_at FROM message AS M0, team AS T WHERE M0.id = 1 AND M0.id = T.id ORDER BY M0.created_at DESC";
 
 				const method = "SELECT";
@@ -941,8 +886,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql0, expected_sql);
 			});
 
-			it("SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC", () => 
-			{
+			it("SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 0, 1) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC", () => {
 				const expected_sql = "SELECT M0.message_id, M0.recruiter_id, M0.recruiter_pseudo, M0.created_at, M0.content, M0.img_url, M0.staff_verify, T.name, (SELECT M1.created_at FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_created_at, (SELECT M1.content FROM message AS M1 WHERE M1.recruiter_id = M0.recruiter_id AND M1.created_at < M0.created_at ORDER BY created_at DESC LIMIT 1 OFFSET 0) AS M1_content FROM message AS M0, team AS T WHERE M0.recruiter_id = T.recruiter_id ORDER BY M0.created_at DESC";
 
 				const method = "SELECT";
@@ -1005,12 +949,9 @@ describe("SQL", () =>
 		});
 	});
 
-	describe("FROM one db but with AS", () => 
-	{
-		describe("SELECT", () => 
-		{
-			it("SELECT T.* FROM table_test AS T", () => 
-			{
+	describe("FROM one db but with AS", () => {
+		describe("SELECT", () => {
+			it("SELECT T.* FROM table_test AS T", () => {
 				const expected_sql = "SELECT T.* FROM table_test AS T";
 
 				const method = "SELECT";
@@ -1026,8 +967,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT T.* FROM table_test AS T WHERE T.id = 0", () => 
-			{
+			it("SELECT T.* FROM table_test AS T WHERE T.id = 0", () => {
 				const expected_sql = "SELECT T.* FROM table_test AS T WHERE T.id = 0";
 
 				const method = "SELECT";
@@ -1046,8 +986,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT T.* FROM table_test AS T ORDER BY T.id ASC, T.pseudo DESC", () => 
-			{
+			it("SELECT T.* FROM table_test AS T ORDER BY T.id ASC, T.pseudo DESC", () => {
 				const expected_sql = "SELECT T.* FROM table_test AS T ORDER BY T.id ASC, T.pseudo DESC";
 
 				const method = "SELECT";
@@ -1067,8 +1006,7 @@ describe("SQL", () =>
 				assert.strictEqual(sql, expected_sql);
 			});
 
-			it("SELECT T.id AS UUID FROM table_test AS T", () => 
-			{
+			it("SELECT T.id AS UUID FROM table_test AS T", () => {
 				const expected_sql = "SELECT T.id AS UUID FROM table_test AS T";
 
 				const method = "SELECT";
@@ -1085,10 +1023,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("INSERT", () => 
-		{
-			it("INSERT INTO table_test AS T (T.pseudo) VALUES (\"test\")", () => 
-			{
+		describe("INSERT", () => {
+			it("INSERT INTO table_test AS T (T.pseudo) VALUES (\"test\")", () => {
 				const expected_sql = "INSERT INTO table_test AS T (T.pseudo) VALUES (\"test\")";
 
 				const method = "INSERT";
@@ -1105,10 +1041,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("UPDATE", () => 
-		{
-			it("UPDATE table_test AS T SET T.pseudo = \"test_pseudo\"", () => 
-			{
+		describe("UPDATE", () => {
+			it("UPDATE table_test AS T SET T.pseudo = \"test_pseudo\"", () => {
 				const expected_sql = "UPDATE table_test AS T SET T.pseudo = \"test_pseudo\"";
 
 				const method = "UPDATE";
@@ -1125,10 +1059,8 @@ describe("SQL", () =>
 			});
 		});
 
-		describe("DELETE", () => 
-		{
-			it("DELETE FROM table_test AS T WHERE T.pseudo = test", () => 
-			{
+		describe("DELETE", () => {
+			it("DELETE FROM table_test AS T WHERE T.pseudo = test", () => {
 				const expected_sql = "DELETE FROM table_test AS T WHERE T.pseudo = \"test\"";
 
 				const method = "DELETE";
