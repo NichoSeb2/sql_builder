@@ -4,7 +4,7 @@
 	"description": "This is the repository of my SQL builder",
 	"main": "index.js",
 	"scripts": {
-		"test": "mocha"
+		"test": "nyc --reporter=html mocha"
 	},
 	"author": "Parnell \"NichoSeb2\" Polliotti",
 	"keywords": [
@@ -24,6 +24,7 @@
 		"sql-escape": "^1.0.1"
 	},
 	"devDependencies": {
-		"mocha": "^8.2.1"
+		"mocha": "^8.2.1",
+		"nyc": "^15.1.0"
 	}
 }
