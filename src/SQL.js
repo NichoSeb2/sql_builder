@@ -68,7 +68,7 @@ function buildLIMITS({limits})
 	return sql;
 }
 
-function buildSQL({method, tables, fields, wheres = null, orders = null, limits = null, options = {}})
+function buildSQL({method, tables, fields, wheres = null, orders = null, limits = null, likes = null, options = {}})
 {
 	method = method.toUpperCase();
 
@@ -208,6 +208,18 @@ function buildSQL({method, tables, fields, wheres = null, orders = null, limits 
 
 				return prefix + field.field + " = " + (typeof field.value === "number" ? field.value : valueEscape + field.value + valueEscape);
 			}).join(", "));
+			break;
+		case "CREATE":
+			sql.push("CREATE");
+
+			sql.push(options.type.toUpperCase());
+
+			sql = sql.concat(buildTABLES({tables}));
+
+			if(likes !== null) {
+				sql.push("LIKE");
+				sql = sql.concat(buildTABLES({tables: likes}));
+			}
 
 			break;
 		default:

@@ -1077,4 +1077,27 @@ describe("SQL", () => {
 			});
 		});
 	});
+
+	describe("Object interaction", () => {
+		describe("CREATE TABLE", () => {
+			it("CREATE TABLE test LIKE model", () => {
+				const expected_sql = "CREATE TABLE test LIKE model";
+
+				const method = "CREATE";
+				const tables = [
+					{value: "test"}
+				];
+				const likes = [
+					{value: "model"}
+				];
+				const options = {
+					type: "TABLE"
+				};
+
+				const sql = buildSQL({method, tables, likes, options});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+		});
+	});
 });
