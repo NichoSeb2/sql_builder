@@ -360,6 +360,40 @@ describe("SQL", () => {
 				assert.strictEqual(sql, expected_sql);
 			});
 
+			it("INSERT INTO table_test (table_test.pseudo, table_test.visibility) VALUES (\"test\", 1)", () => {
+				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.visibility) VALUES (\"test\", 1)";
+
+				const method = "INSERT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test"}, 
+					{table: 0, field: "visibility", value: true}, 
+				];
+
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("INSERT INTO table_test (table_test.pseudo, table_test.visibility) VALUES (\"test\", 0)", () => {
+				const expected_sql = "INSERT INTO table_test (table_test.pseudo, table_test.visibility) VALUES (\"test\", 0)";
+
+				const method = "INSERT";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test"}, 
+					{table: 0, field: "visibility", value: false}, 
+				];
+
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
 			it("INSERT INTO table_test (table_test.pseudo) VALUES (\"test\") > fields.table === undefined", () => {
 				const expected_sql = "INSERT INTO table_test (table_test.pseudo) VALUES (\"test\")";
 
@@ -458,6 +492,40 @@ describe("SQL", () => {
 				];
 				const fields = [
 					{table: 0, field: "pseudo", value: "test_pseudo"}
+				];
+
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.visibility = 1", () => {
+				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.visibility = 1";
+
+				const method = "UPDATE";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test_pseudo"}, 
+					{table: 0, field: "visibility", value: true}, 
+				];
+
+				const sql = buildSQL({method, tables, fields});
+
+				assert.strictEqual(sql, expected_sql);
+			});
+
+			it("UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.visibility = 0", () => {
+				const expected_sql = "UPDATE table_test SET table_test.pseudo = \"test_pseudo\", table_test.visibility = 0";
+
+				const method = "UPDATE";
+				const tables = [
+					{value: "table_test"}
+				];
+				const fields = [
+					{table: 0, field: "pseudo", value: "test_pseudo"}, 
+					{table: 0, field: "visibility", value: false}, 
 				];
 
 				const sql = buildSQL({method, tables, fields});
